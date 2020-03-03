@@ -38,7 +38,7 @@ def model_1(input_shape, n_class):
 
 def model_compile(model, lr):
     optimizer = optimizers.Adam(lr)
-    model.compile( optimizer=optimizer,
+    model.compile(optimizer=optimizer,
                  loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
     return model
