@@ -66,20 +66,19 @@ if __name__ == '__main__':
     # get dataset ready
     x_train, x_test, y_train, y_test = get_final_train_testset()
 
+    # set parameters
     input_shape = (x_train.shape)[1:]
     n_class = 10
     lr = 0.001
     tensorboard_dir = "tensorboard/scalars/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     model_params = {'epochs' : 10, 'batch_size' : 32}   # params passed to fit function 
-    model_file_dir = os.path.join('model_dir', 'cnn.pb')
+    model_file_dir = os.path.join('model_dir', 'cnn.pb')  # set it to pb file!!!!! SavedModel format for god's sake!
     # tensorboard_dir = os.path.join('tensorboard', 'test')
     
-    # # # train 
-    # print('Train begins..')
+    # train 
     callbacks = get_callbacks(model_file_dir, tensorboard_dir)
-    # model = build_model(input_shape, n_class, lr)
-    # model, history = train_model(model, x_train, x_test, y_train, y_test, callbacks, **model_params)
-    # print('Train ended..')
+    model = build_model(input_shape, n_class, lr)
+    model, history = train_model(model, x_train, x_test, y_train, y_test, callbacks, **model_params)
 
     # # retrain 
     model, history = retrain_model(x_test, y_train, y_test, callbacks, model = None, model_file_dir = model_file_dir, **model_params)
