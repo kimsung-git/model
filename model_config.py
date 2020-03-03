@@ -1,4 +1,4 @@
 import os 
 
-model_file_dir = 
-tensorboard_dir = 
+model_file_dir = None
+tensorboard_dir = None

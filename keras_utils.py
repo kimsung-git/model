@@ -1,16 +1,16 @@
 from tensorflow.keras import callbacks
 import model_config as c
 
-def get_callbacks(model_file_dir, tensorboard_dir):
+def get_callbacks(model_file_dir, tensorboard_dir = None):
 
-
-    # file format can be either h5, ckpt, or pb(not sure about .pb)
     # filepath="weights-improvement-{epoch:02d}-{val_accuracy:.2f}.hdf5"
-    model_chcekpoint = callbacks.ModelCheckpoint(model_file_dir, monitor='val_accuracy', verbose=1, save_best_only=True, monitor = 'val_loss', mode='max')
+    model_chcekpoint = callbacks.ModelCheckpoint(model_file_dir, monitor='val_acc', verbose=1, 
+                                                save_best_only=True, mode='auto')
 
-    # filepath="weights.best.hdf5"
-    # model_chcekpoint = callbacks.ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=True, mode='max')
-
+    earlystop = callbacks.EarlyStopping(monitor = 'val_loss',
+                                        patience = 7,
+                                        verbose = 1,
+                                        mode = 'auto')
 
 
     # initial_learning_rate = 0.1
@@ -21,15 +21,9 @@ def get_callbacks(model_file_dir, tensorboard_dir):
     #     staircase = True
     # )
 
-
-    tensorboard = callbacks.TensorBoard(log_dir = tensorboard_dir)
-
-
-    earlystop = callbacks.EarlyStopping(monitor = 'val_loss',
-                            min_delta = 0,
-                            patience = 10,
-                            verbose = 1,
-                            restore_best_weights = True)
+    if tensorboard_dir is not None:
+        tensorboard = callbacks.TensorBoard(log_dir = tensorboard_dir)
+    
 
     return [model_chcekpoint, tensorboard, earlystop]
 
