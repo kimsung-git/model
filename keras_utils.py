@@ -22,7 +22,7 @@ def get_callbacks(model_file_dir, tensorboard_dir = None):
     # )
 
     if tensorboard_dir is not None:
-        tensorboard = callbacks.TensorBoard(log_dir = tensorboard_dir)
+        tensorboard = callbacks.TensorBoard(log_dir = tensorboard_dir,  histogram_freq=1)
     
 
     return [model_chcekpoint, tensorboard, earlystop]

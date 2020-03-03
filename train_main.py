@@ -6,6 +6,7 @@ from keras import backend as K
 import os
 from evaluate import ModelEvaluation
 from tensorflow.keras import models
+import datetime
 
 
 def get_final_train_testset():
@@ -68,19 +69,20 @@ if __name__ == '__main__':
     input_shape = (x_train.shape)[1:]
     n_class = 10
     lr = 0.001
-    model_params = {'epochs' : 1, 'batch_size' : 32}   # params passed to fit function 
+    tensorboard_dir = "tensorboard/scalars/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    model_params = {'epochs' : 10, 'batch_size' : 32}   # params passed to fit function 
     model_file_dir = os.path.join('model_dir', 'cnn.pb')
-    tensorboard_dir = os.path.join('tensorboard')
+    # tensorboard_dir = os.path.join('tensorboard', 'test')
     
-    # train 
-    print('Train begins..')
+    # # # train 
+    # print('Train begins..')
     callbacks = get_callbacks(model_file_dir, tensorboard_dir)
-    model = build_model(input_shape, n_class, lr)
-    model, history = train_model(model, x_train, x_test, y_train, y_test, callbacks, **model_params)
-    print('Train ended..')
+    # model = build_model(input_shape, n_class, lr)
+    # model, history = train_model(model, x_train, x_test, y_train, y_test, callbacks, **model_params)
+    # print('Train ended..')
 
     # # retrain 
-    # model, history = retrain_model(x_test, y_train, y_test, callbacks, model = None, model_file_dir = model_file_dir, **model_params)
+    model, history = retrain_model(x_test, y_train, y_test, callbacks, model = None, model_file_dir = model_file_dir, **model_params)
 
     # predict and evaluate
     # model = models.load_model(model_file_dir)   # load model
